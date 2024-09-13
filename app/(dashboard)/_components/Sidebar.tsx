@@ -7,19 +7,28 @@ const SIDEBAR_ITEMS = [
   },
   {
     name: "All Buddies",
-    href: "/dashboard/buddies",
+    href: "/buddies",
+  },
+  {
+    name: "Invites",
+    href: "/invites",
+  },
+  {
+    name: "Profile",
+    href: "/profile",
   },
 ];
 
 export default function Sidebar() {
   return (
-    <aside className="fixed left-0 w-80 h-screen border-r pt-16 overflow-y-auto thin-scrollbar z-[10] bg-white">
+    <aside className="thin-scrollbar fixed left-0 z-[10] h-screen w-80 overflow-y-auto border-r bg-white pt-16">
       <div>
         {SIDEBAR_ITEMS.map((item) => (
           <Link
             key={item.name}
             href={item.href}
-            className="flex items-center gap-4 px-4 py-2 text-sm font-medium hover:bg-muted/10 rounded-md">
+            className="flex items-center gap-4 rounded-md px-4 py-2 text-sm font-medium hover:bg-muted/10"
+          >
             {item.name}
           </Link>
         ))}

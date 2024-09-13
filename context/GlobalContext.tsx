@@ -20,6 +20,11 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    fetchUserDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   async function fetchUserDetails() {
     if (!user) {
       setClientUser(null);
@@ -52,13 +57,12 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  useEffect(() => {
-    fetchUserDetails();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  if (loading) return <div>Loading...</div>;
 
   return (
-    <GlobalContext.Provider value={{ clientUser, loading, error, refreshUser: fetchUserDetails }}>
+    <GlobalContext.Provider
+      value={{ clientUser, loading, error, refreshUser: fetchUserDetails }}
+    >
       {children}
     </GlobalContext.Provider>
   );
