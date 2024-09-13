@@ -17,11 +17,19 @@ export default function Navbar() {
         </Link>
         <div className="flex items-center gap-4 text-sm font-medium">
           <SignedIn>
-            <Link href="/dashboard">Dashboard</Link>
-            <SignOutButton>Sign out</SignOutButton>
+            <Link
+              href="/dashboard"
+              className="hover:underline">
+              Dashboard
+            </Link>
+            <SignOutButton>
+              <span className="hover:underline cursor-pointer">Sign Out</span>
+            </SignOutButton>
           </SignedIn>
           <SignedOut>
-            <SignInButton>Sign In</SignInButton>
+            <SignInButton>
+              <span className="hover:underline cursor-pointer">Sign In</span>
+            </SignInButton>
           </SignedOut>
         </div>
       </div>
