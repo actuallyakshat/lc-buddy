@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <main>
-      Hello World
+      Home
     </main>
   );
 }
