@@ -25,3 +25,13 @@ body {
     text-wrap: balance;
   }
 }
+
+.noscrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.thin-scrollbar {
+  scrollbar-width: thin;
+  -ms-overflow-style: none;
+}
