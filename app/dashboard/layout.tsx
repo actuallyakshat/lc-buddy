@@ -1,6 +1,6 @@
 import Sidebar from "./_components/Sidebar";
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -8,7 +8,7 @@ export default function RootLayout({
   return (
     <div>
       <Sidebar />
-      <main className="pl-80 pt-16">{children}</main>
+      <main className="w-full pl-80 pt-16">{children}</main>
     </div>
   );
 }
