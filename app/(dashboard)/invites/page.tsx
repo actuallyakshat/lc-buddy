@@ -1,25 +1,22 @@
 import { currentUser } from "@clerk/nextjs/server";
-import React from "react";
-import {
-  acceptInvite,
-  getAllInvites,
-} from "../group/[groupId]/_actions/friends-actions";
-import AcceptInviteButton from "./_components/AcceptInviteButton";
+import IncomingInvites from "./_components/IncomingInvites";
+import OutgoingRequests from "./_components/OutgoingRequests";
+import { getAllInvites } from "../group/[groupId]/_actions/friends-actions";
 
 export default async function Invites() {
   const user = await currentUser();
   const response = await getAllInvites({ userId: user!.id });
-  if (!response.success) return <div>Error</div>;
   const allInvites = response.data;
+  if (!response.success) return <div>Error</div>;
+  if (!allInvites) return <div>Error</div>;
   return (
-    <div>
-      <h1>Invites</h1>
-      {allInvites!.map((invite) => (
-        <div key={invite.id}>
-          {invite.group.name} - {invite.sender.name}
-          <AcceptInviteButton userId={user!.id} inviteId={invite.id} />
-        </div>
-      ))}
+    <div className="px-16 pt-12">
+      <h1 className="text-3xl font-bold">Incoming Invites</h1>
+      <p className="text-sm font-medium text-muted-foreground">
+        Invitations you have received to join accountability groups
+      </p>
+      <IncomingInvites invites={allInvites} userId={user!.id} />
+      <OutgoingRequests invites={allInvites} userId={user!.id} />
     </div>
   );
 }

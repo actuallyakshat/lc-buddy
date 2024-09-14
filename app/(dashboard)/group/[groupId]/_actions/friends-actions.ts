@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/db";
+import { revalidatePath } from "next/cache";
 
 export async function sendInvite({
   groupId,
@@ -64,9 +65,13 @@ export async function getAllInvites({ userId }: { userId: string }) {
 
     if (!user) throw new Error("User not found");
 
+    // Fetch both incoming and outgoing invites
     const invites = await prisma.invite.findMany({
       where: {
-        receiverId: userId,
+        OR: [
+          { receiverId: userId }, // Incoming invites
+          { senderId: userId }, // Outgoing invites
+        ],
       },
       include: {
         group: true,
@@ -119,7 +124,70 @@ export async function acceptInvite({
       },
     });
 
+    revalidatePath("/dashboard");
     return { success: true, data: membership };
+  } catch (error) {
+    const err = error as Error;
+    console.error(err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function cancelInvite({ inviteId }: { inviteId: string }) {
+  try {
+    if (!inviteId) throw new Error("Invite ID is required");
+
+    const invite = await prisma.invite.findUnique({
+      where: {
+        id: inviteId,
+      },
+      include: {
+        group: true,
+        sender: true,
+      },
+    });
+
+    if (!invite) throw new Error("Invite not found");
+
+    await prisma.invite.delete({
+      where: {
+        id: inviteId,
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true, data: invite };
+  } catch (error) {
+    const err = error as Error;
+    console.error(err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function rejectInvite({ inviteId }: { inviteId: string }) {
+  try {
+    if (!inviteId) throw new Error("Invite ID is required");
+
+    const invite = await prisma.invite.findUnique({
+      where: {
+        id: inviteId,
+      },
+      include: {
+        group: true,
+        sender: true,
+      },
+    });
+
+    if (!invite) throw new Error("Invite not found");
+
+    await prisma.invite.delete({
+      where: {
+        id: inviteId,
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true, data: invite };
   } catch (error) {
     const err = error as Error;
     console.error(err.message);

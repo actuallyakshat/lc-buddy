@@ -33,6 +33,7 @@ export default function AddFriendModal({ groupId }: { groupId: string }) {
       toast.success("Friend request sent successfully", {
         id: "add-friend",
       });
+      setOpen(false);
     } else {
       toast.error(response.error, { id: "add-friend" });
     }

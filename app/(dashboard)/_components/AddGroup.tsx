@@ -30,6 +30,16 @@ export default function AddGroup() {
       return;
     }
 
+    if (description.length > 1000) {
+      setError("Description cannot be more than 1000 characters.");
+      return;
+    }
+
+    if (groupName.length > 100) {
+      setError("Group name cannot be more than 100 characters.");
+      return;
+    }
+
     try {
       toast.loading("Adding Group", { id: "add-group" });
       const response = await createGroup({
