@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/db";
+import { revalidatePath } from "next/cache";
 
 interface GetUserDetailsProps {
   clerkId: string;
@@ -122,6 +123,7 @@ export async function updateLeetcodeId(clerkId: string, leetcodeId: string) {
         leetcodeId,
       },
     });
+    revalidatePath("/dashboard");
     return { success: true, data: updatedUser };
   } catch (error: any) {
     console.error(error.message);

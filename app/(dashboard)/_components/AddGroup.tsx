@@ -25,8 +25,8 @@ export default function AddGroup() {
   const { clientUser } = useGlobalStore();
 
   async function handleAddGroup() {
-    if (!groupName || !description) {
-      setError("Both fields are required.");
+    if (!groupName) {
+      setError("A group name is required.");
       return;
     }
 

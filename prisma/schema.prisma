@@ -7,61 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// enum STATUS {
-//   PENDING
-//   RESOLVED
-// }
-
-// enum INVITE_PERMISSIONS {
-//   ADMIN
-//   EVERYONE
-// }
-
-// model User {
-//   id                String             @id @default(cuid())
-//   clerkId           String             @unique
-//   email             String             @unique
-//   name              String
-//   leetcodeId        String             @default("")
-//   invitePermissions INVITE_PERMISSIONS @default(ADMIN)
-//   friendships       Friendship[]
-//   Participant       Participant[]
-//   createdAt         DateTime           @default(now())
-//   updatedAt         DateTime           @updatedAt
-// }
-
-// model Friendship {
-//   id              String            @id @default(cuid())
-//   title           String
-//   creatorId       String
-//   creator         User              @relation(fields: [creatorId], references: [clerkId])
-//   participants    Participant[]
-//   pendingRequests PendingRequests[]
-//   createdAt       DateTime          @default(now())
-//   updatedAt       DateTime          @updatedAt
-// }
-
-// model PendingRequests {
-//   id           String     @id @default(cuid())
-//   friendshipId String
-//   senderId     String
-//   receiverId   String
-//   status       STATUS
-//   friendship   Friendship @relation(fields: [friendshipId], references: [id])
-//   createdAt    DateTime   @default(now())
-//   updatedAt    DateTime   @updatedAt
-// }
-
-// model Participant {
-//   id           String      @id @default(cuid())
-//   invitedBy    String
-//   InvitedBy    User        @relation(fields: [invitedBy], references: [clerkId])
-//   userId       String
-//   friendshipId String
-//   user         User        @relation(fields: [userId], references: [clerkId])
-//   Friendship   Friendship? @relation(fields: [friendshipId], references: [id])
-// }
-
 enum MemberRole {
   ADMIN
   MEMBER
@@ -99,8 +44,8 @@ model Membership {
   userId    String
   groupId   String
   role      MemberRole @default(MEMBER)
-  user      User       @relation(fields: [userId], references: [id])
-  group     Group      @relation(fields: [groupId], references: [id])
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group     Group      @relation(fields: [groupId], references: [id], onDelete: Cascade)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
@@ -113,8 +58,8 @@ model Invite {
   senderId   String
   receiverId String
   status     InviteStatus @default(PENDING)
-  group      Group        @relation(fields: [groupId], references: [id])
-  sender     User         @relation("Sender", fields: [senderId], references: [id])
+  group      Group        @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  sender     User         @relation("Sender", fields: [senderId], references: [id], onDelete: Cascade)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
 }

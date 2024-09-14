@@ -37,6 +37,15 @@ export async function sendInvite({
 
     if (!receiver) throw new Error("Receiver not found");
 
+    const alreadyAdded = await prisma.membership.findFirst({
+      where: {
+        userId: receiver.id,
+        groupId,
+      },
+    });
+
+    if (alreadyAdded) throw new Error("User already added to group");
+
     const invite = await prisma.invite.create({
       data: {
         groupId,

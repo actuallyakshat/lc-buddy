@@ -21,7 +21,10 @@ export default function AddFriendModal({ groupId }: { groupId: string }) {
   const [email, setEmail] = useState("");
 
   async function handleSubmit() {
-    if (email.trim() == "") toast.error("Email is required");
+    if (email.trim() == "") {
+      toast.error("Email is required");
+      return;
+    }
 
     toast.loading("Sending request", { id: "add-friend" });
     const response = await sendInvite({
@@ -42,9 +45,11 @@ export default function AddFriendModal({ groupId }: { groupId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Add Friend</Button>
+        <button className="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-left text-sm outline-none transition-colors hover:bg-muted data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+          Add Friend
+        </button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
           <DialogTitle>Add Friend</DialogTitle>
           <DialogDescription>
@@ -60,7 +65,7 @@ export default function AddFriendModal({ groupId }: { groupId: string }) {
         >
           <Label className="text-sm">Email of your friend</Label>
           <Input
-            type="text"
+            type="email"
             placeholder="friend@example.com"
             onChange={(e) => setEmail(e.target.value)}
           />

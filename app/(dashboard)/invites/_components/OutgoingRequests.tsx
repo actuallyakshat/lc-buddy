@@ -27,7 +27,7 @@ export default function OutgoingRequests({
           ))}
         {invites!.length == 0 && (
           <p className="mt-5 text-sm font-medium text-muted-foreground">
-            You have no outgoing invites {":("}
+            You have no outgoing invites
           </p>
         )}
       </div>
