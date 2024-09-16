@@ -132,7 +132,7 @@ function SearchResultsPanel({
             alt={result.alt}
             width={600}
             height={600}
-            quality={75}
+            quality={35}
             className="aspect-square h-full w-full object-cover"
           />
         </div>

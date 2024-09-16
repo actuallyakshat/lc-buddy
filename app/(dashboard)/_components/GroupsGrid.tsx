@@ -26,12 +26,23 @@ export default function GroupsGrid({
 }
 
 function GroupCard({ group }: { group: Group }) {
+  const groupHeaderImage = group.headerImageURL
+    ? `url('${group.headerImageURL}')`
+    : "";
   return (
     <Link
       href={`/group/${group.id}`}
       className="flex flex-col overflow-hidden rounded-xl border"
     >
-      <div className="h-[140px] bg-zinc-300"></div>
+      <div
+        className="h-[140px] bg-zinc-200"
+        style={{
+          backgroundImage: groupHeaderImage,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      ></div>
       <div className="p-4">
         <h3 className="text-lg font-medium">{group.name}</h3>
         <p className="text-sm">{group.description}</p>
