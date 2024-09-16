@@ -75,3 +75,9 @@
   scrollbar-width: thin;
   -ms-overflow-style: none;
 }
+
+.group-header-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

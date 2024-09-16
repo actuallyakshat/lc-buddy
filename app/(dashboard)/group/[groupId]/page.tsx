@@ -10,8 +10,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Ellipsis } from "lucide-react";
+import { Camera, Ellipsis } from "lucide-react";
 import DeleteGroupButton from "./_components/DeleteGroupButton";
+import ChooseImageDialog from "./_components/ChooseImageDialog";
 
 export default async function GroupPage({
   params,
@@ -29,21 +30,35 @@ export default async function GroupPage({
   });
 
   return (
-    <div className="px-16 pt-12">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-bold">{groupDetails?.name}</h2>
-          <p className="text-sm font-medium text-muted-foreground">
-            {groupDetails?.description}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <OptionsMenu id={id} />
-        </div>
+    <div>
+      <div
+        className={`group relative min-h-[300px] w-full ${
+          groupDetails?.headerImageURL ? "group-header-image" : "bg-zinc-200"
+        }`}
+        style={
+          groupDetails?.headerImageURL
+            ? { backgroundImage: `url('${groupDetails.headerImageURL}')` }
+            : {}
+        }
+      >
+        <ChooseImageDialog groupId={id} />
       </div>
-      {groupDetails?.memberships.map((membership) => (
-        <div key={membership.user.id}>{membership.user.name}</div>
-      ))}
+      <div className="px-16 pt-12">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-3xl font-bold">{groupDetails?.name}</h2>
+            <p className="text-sm font-medium text-muted-foreground">
+              {groupDetails?.description}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <OptionsMenu id={id} />
+          </div>
+        </div>
+        {groupDetails?.memberships.map((membership) => (
+          <div key={membership.user.id}>{membership.user.name}</div>
+        ))}
+      </div>
     </div>
   );
 }

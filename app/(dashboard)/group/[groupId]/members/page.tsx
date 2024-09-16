@@ -1,6 +1,6 @@
 import prisma from "@/db";
+import { MembershipWithUsers } from "@/types/types";
 import Link from "next/link";
-import React from "react";
 
 export default async function Members({
   params,
@@ -35,12 +35,23 @@ export default async function Members({
 
       <div className="mt-6 space-y-3">
         {allMembersOfGroup.map((membership) => (
-          <div key={membership.user.id} className="flex items-center gap-3">
-            <h4 className="text-xl font-bold">{membership.user.name}</h4>
-            <p className="text-sm">({membership.user.leetcodeId})</p>
-          </div>
+          <MemberCard key={membership.user.id} membership={membership} />
         ))}
       </div>
     </div>
+  );
+}
+
+function MemberCard({ membership }: { membership: MembershipWithUsers }) {
+  return (
+    <Link
+      href={"https://leetcode.com/u/" + membership.user.leetcodeId}
+      target="_blank"
+      key={membership.user.id}
+      className="flex items-center gap-3"
+    >
+      <h4 className="text-xl font-bold">{membership.user.name}</h4>
+      <p className="text-sm">({membership.user.leetcodeId})</p>
+    </Link>
   );
 }
