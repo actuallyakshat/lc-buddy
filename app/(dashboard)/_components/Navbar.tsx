@@ -11,8 +11,11 @@ import Link from "next/link";
 export default function Navbar() {
   return (
     <nav className="fixed z-[11] h-16 w-full border-b bg-background">
-      <div className="mx-auto flex h-full w-full max-w-screen-xl items-center justify-between">
-        <Link href={"/"} className="text-lg font-extrabold">
+      <div className="mx-auto flex h-full w-full max-w-screen-2xl items-center justify-between px-5">
+        <Link
+          href={"/"}
+          className="flex items-center gap-3 text-lg font-extrabold"
+        >
           <Image
             src="/logo.png"
             alt="LeetCode Buddy Logo"
@@ -20,6 +23,7 @@ export default function Navbar() {
             height={100}
             className="max-w-8"
           />
+          <h2 className="font-medium">LC Buddy</h2>
         </Link>
         <div className="flex items-center gap-4 text-sm font-medium">
           <SignedIn>

@@ -19,18 +19,21 @@ enum InviteStatus {
 }
 
 model User {
-  id          String       @id @unique
-  email       String       @unique
-  name        String
-  leetcodeId  String       @default("")
-  memberships Membership[]
-  sentInvites Invite[]     @relation("Sender")
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id            String       @id @unique
+  email         String       @unique
+  name          String
+  leetcodeId    String       @default("")
+  memberships   Membership[]
+  sentInvites   Invite[]     @relation("Sender")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  createdGroups Group[]
 }
 
 model Group {
   id             String       @id @default(cuid())
+  creatorId      String
+  creator        User         @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   name           String
   description    String?
   headerImageURL String?

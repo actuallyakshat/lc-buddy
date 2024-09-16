@@ -18,6 +18,7 @@ export async function createGroup({
     // Create new group
     const group = await prisma.group.create({
       data: {
+        creatorId: userId,
         name,
         description,
       },

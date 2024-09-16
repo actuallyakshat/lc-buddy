@@ -25,34 +25,25 @@ export default function Sidebar() {
     <aside className="thin-scrollbar fixed left-0 z-[10] h-screen w-80 overflow-y-auto border-r bg-background pt-16">
       <div className="flex h-full flex-col justify-between gap-4 py-6">
         <div>
-          <Link
-            href={"/"}
-            className="mx-auto mb-6 flex w-full items-center gap-3 px-6 text-lg font-extrabold"
-          >
-            <Image
-              src="/logo.png"
-              alt="LeetCode Buddy Logo"
-              width={100}
-              height={100}
-              className="max-w-8"
-            />
-            <h2 className="text-base font-medium">LeetCode Buddy</h2>
-          </Link>
-
-          {SIDEBAR_ITEMS.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="flex items-center gap-4 rounded-md px-6 py-3 transition-colors hover:bg-muted"
-            >
-              {item.icon}
-              {item.name}
-            </Link>
-          ))}
+          <span className="px-6 text-sm font-medium text-muted-foreground">
+            Menu
+          </span>
+          <div className="pt-2">
+            {SIDEBAR_ITEMS.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="flex items-center gap-4 rounded-md px-6 py-3 transition-colors hover:bg-muted"
+              >
+                {item.icon}
+                {item.name}
+              </Link>
+            ))}
+          </div>
         </div>
         <Link
           href="/profile"
-          className="flex items-center gap-4 rounded-md px-6 py-2 hover:bg-muted"
+          className="flex items-center gap-4 rounded-md px-6 py-3 hover:bg-muted"
         >
           <User className="size-5" />
           Profile

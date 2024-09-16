@@ -14,14 +14,16 @@ import { Camera, Ellipsis } from "lucide-react";
 import DeleteGroupButton from "./_components/DeleteGroupButton";
 import ChooseImageDialog from "./_components/ChooseImageDialog";
 import EditGroupButton from "./_components/EditGroupButton";
-import { Group } from "@prisma/client";
+import { Group, MemberRole } from "@prisma/client";
 import { GroupWithMembershipsAndUsers } from "@/types/types";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function GroupPage({
   params,
 }: {
   params: { groupId: string };
 }) {
+  const user = await currentUser();
   const id = params.groupId as string;
   const groupDetails = await prisma.group.findUnique({
     where: { id },
@@ -31,6 +33,12 @@ export default async function GroupPage({
       },
     },
   });
+
+  const userInMembership = groupDetails?.memberships.find(
+    (membership) => membership.user.id === user?.id,
+  );
+
+  if (!userInMembership) return <div>You are not a member of this group</div>;
 
   if (!groupDetails) return <div>Group not found</div>;
 
@@ -57,7 +65,11 @@ export default async function GroupPage({
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <OptionsMenu id={id} groupDetails={groupDetails} />
+            <OptionsMenu
+              id={id}
+              groupDetails={groupDetails}
+              role={userInMembership.role}
+            />
           </div>
         </div>
         {groupDetails?.memberships.map((membership) => (
@@ -70,9 +82,11 @@ export default async function GroupPage({
 
 function OptionsMenu({
   id,
+  role,
   groupDetails,
 }: {
   id: string;
+  role: MemberRole;
   groupDetails: GroupWithMembershipsAndUsers;
 }) {
   return (
@@ -88,15 +102,19 @@ function OptionsMenu({
             View Members
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <AddFriendModal groupId={id} />
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <EditGroupButton groupId={id} groupDetails={groupDetails} />
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <DeleteGroupButton groupId={id} />
-        </DropdownMenuItem>
+        {role === MemberRole.ADMIN && (
+          <div>
+            <DropdownMenuItem asChild>
+              <AddFriendModal groupId={id} />
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <EditGroupButton groupId={id} groupDetails={groupDetails} />
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <DeleteGroupButton groupId={id} />
+            </DropdownMenuItem>
+          </div>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
