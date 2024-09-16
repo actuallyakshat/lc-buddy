@@ -127,3 +127,43 @@ export async function updateGroupHeaderImage({
     return { success: false, error: err.message };
   }
 }
+
+export async function editGroup({
+  groupId,
+  name,
+  description,
+}: {
+  groupId: string;
+  name: string;
+  description?: string;
+}) {
+  try {
+    if (!groupId) throw new Error("Group ID is required");
+    if (!name) throw new Error("Name is required");
+
+    const group = await prisma.group.findUnique({
+      where: {
+        id: groupId,
+      },
+    });
+
+    if (!group) throw new Error("Group not found");
+
+    await prisma.group.update({
+      where: {
+        id: groupId,
+      },
+      data: {
+        name,
+        description,
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true, data: group };
+  } catch (error) {
+    const err = error as Error;
+    console.error(err.message);
+    return { success: false, error: err.message };
+  }
+}

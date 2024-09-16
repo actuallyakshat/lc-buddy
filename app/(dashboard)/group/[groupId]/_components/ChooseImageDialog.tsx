@@ -48,7 +48,7 @@ export default function ChooseImageDialog({ groupId }: { groupId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className="absolute flex size-full items-center justify-center bg-zinc-700/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <button className="absolute flex size-full items-center justify-center bg-black/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
           <Camera className="stroke-white" />
         </button>
       </DialogTrigger>
@@ -59,13 +59,11 @@ export default function ChooseImageDialog({ groupId }: { groupId: string }) {
             Search for an image to update the header of your group.
           </DialogDescription>
         </DialogHeader>
-        <form>
-          <Input
-            placeholder="Programming Aesthetics"
-            type="text"
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </form>
+        <Input
+          placeholder="Programming Aesthetics"
+          type="text"
+          onChange={(e) => setQuery(e.target.value)}
+        />
         {searchResults.length > 0 && (
           <SearchResultsPanel
             data={searchResults}
@@ -83,7 +81,7 @@ export default function ChooseImageDialog({ groupId }: { groupId: string }) {
         {debouncedQuery.trim() == "" &&
           searchResults.length == 0 &&
           !loading && (
-            <div className="mt-4 flex items-center justify-center">
+            <div className="mt-2 flex items-center">
               <p className="text-sm text-muted-foreground">
                 Search for an image to update the header of your group.
               </p>

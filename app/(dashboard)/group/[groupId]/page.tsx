@@ -13,6 +13,9 @@ import {
 import { Camera, Ellipsis } from "lucide-react";
 import DeleteGroupButton from "./_components/DeleteGroupButton";
 import ChooseImageDialog from "./_components/ChooseImageDialog";
+import EditGroupButton from "./_components/EditGroupButton";
+import { Group } from "@prisma/client";
+import { GroupWithMembershipsAndUsers } from "@/types/types";
 
 export default async function GroupPage({
   params,
@@ -28,6 +31,8 @@ export default async function GroupPage({
       },
     },
   });
+
+  if (!groupDetails) return <div>Group not found</div>;
 
   return (
     <div>
@@ -52,7 +57,7 @@ export default async function GroupPage({
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <OptionsMenu id={id} />
+            <OptionsMenu id={id} groupDetails={groupDetails} />
           </div>
         </div>
         {groupDetails?.memberships.map((membership) => (
@@ -63,7 +68,13 @@ export default async function GroupPage({
   );
 }
 
-function OptionsMenu({ id }: { id: string }) {
+function OptionsMenu({
+  id,
+  groupDetails,
+}: {
+  id: string;
+  groupDetails: GroupWithMembershipsAndUsers;
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -79,6 +90,9 @@ function OptionsMenu({ id }: { id: string }) {
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <AddFriendModal groupId={id} />
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <EditGroupButton groupId={id} groupDetails={groupDetails} />
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <DeleteGroupButton groupId={id} />

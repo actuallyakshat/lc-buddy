@@ -13,13 +13,16 @@ import {
 } from "@/components/ui/alert-dialog";
 import { deleteGroup } from "@/app/(dashboard)/_actions.ts/group-actions";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function DeleteGroupButton({ groupId }: { groupId: string }) {
+  const router = useRouter();
   async function handleDeleteGroup() {
     toast.loading("Deleting group", { id: "delete-group" });
     const response = await deleteGroup({ groupId });
     if (response.success) {
       toast.success("Group deleted successfully", { id: "delete-group" });
+      router.push("/dashboard");
     } else {
       toast.error(response.error, { id: "delete-group" });
     }
