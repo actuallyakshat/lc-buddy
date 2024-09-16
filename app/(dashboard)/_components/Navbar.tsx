@@ -5,6 +5,7 @@ import {
   SignOutButton,
 } from "@clerk/nextjs";
 import { Bell } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Navbar() {
@@ -12,7 +13,13 @@ export default function Navbar() {
     <nav className="fixed z-[11] h-16 w-full border-b bg-background">
       <div className="mx-auto flex h-full w-full max-w-screen-xl items-center justify-between">
         <Link href={"/"} className="text-lg font-extrabold">
-          LC Buddy
+          <Image
+            src="/logo.png"
+            alt="LeetCode Buddy Logo"
+            width={100}
+            height={100}
+            className="max-w-8"
+          />
         </Link>
         <div className="flex items-center gap-4 text-sm font-medium">
           <SignedIn>
