@@ -1,9 +1,4 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignOutButton,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
 import { Bell } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,11 +39,18 @@ export default function Navbar() {
             </SignOutButton>
           </SignedIn>
           <SignedOut>
-            <SignInButton>
-              <span className="cursor-pointer underline-offset-4 hover:underline">
-                Sign In
-              </span>
-            </SignInButton>
+            <Link
+              href={"/sign-in"}
+              className="underline-offset-4 hover:underline"
+            >
+              Login
+            </Link>
+            <Link
+              href={"/sign-up"}
+              className="underline-offset-4 hover:underline"
+            >
+              Register
+            </Link>
           </SignedOut>
         </div>
       </div>

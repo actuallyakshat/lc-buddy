@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function Home() {
@@ -24,11 +24,12 @@ export default function Home() {
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <SignedOut>
-              <SignInButton>
-                <button className="block w-full rounded bg-gradient-to-r from-yellow-600 to-orange-600 px-12 py-3 text-sm font-medium text-white shadow focus:outline-none focus:ring sm:w-auto">
-                  Get Started
-                </button>
-              </SignInButton>
+              <Link
+                href={"/sign-up"}
+                className="block w-full rounded bg-gradient-to-r from-yellow-600 to-orange-600 px-12 py-3 text-sm font-medium text-white shadow focus:outline-none focus:ring sm:w-auto"
+              >
+                Get Started
+              </Link>
             </SignedOut>
             <SignedIn>
               <Link

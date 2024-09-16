@@ -120,6 +120,7 @@ function SearchResultsPanel({
     <div className="noscrollbar mt-5 grid grid-cols-2 gap-2 overflow-y-scroll">
       {data.map((result) => (
         <div
+          className="cursor-pointer"
           key={result.id}
           onClick={() =>
             handleImageSelection({ imageUrl: result.src.original })
