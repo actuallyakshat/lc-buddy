@@ -44,7 +44,7 @@ export default function Home() {
               target="_blank"
               href="https://www.github.com/actuallyakshat/lc-buddy"
             >
-              Learn More
+              GitHub
             </Link>
           </div>
         </div>

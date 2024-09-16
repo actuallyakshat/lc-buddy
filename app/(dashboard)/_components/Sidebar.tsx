@@ -1,4 +1,4 @@
-import { Code, Handshake, MailPlus, User } from "lucide-react";
+import { Code, Handshake, MailPlus, Terminal, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -6,7 +6,7 @@ const SIDEBAR_ITEMS = [
   {
     name: "Dashboard",
     href: "/dashboard/",
-    icon: <Code className="size-5 stroke-[2px]" />,
+    icon: <Terminal className="size-5 stroke-[2px]" />,
   },
   {
     name: "All Friends",
@@ -43,7 +43,7 @@ export default function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
-              className="flex items-center gap-4 rounded-md px-6 py-2 transition-colors hover:bg-muted"
+              className="flex items-center gap-4 rounded-md px-6 py-3 transition-colors hover:bg-muted"
             >
               {item.icon}
               {item.name}

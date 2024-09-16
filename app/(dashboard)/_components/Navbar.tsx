@@ -23,20 +23,27 @@ export default function Navbar() {
         </Link>
         <div className="flex items-center gap-4 text-sm font-medium">
           <SignedIn>
-            <div className="relative h-fit">
+            <button className="relative mr-1.5 h-fit">
               <Bell className="size-5" />
-              <span className="absolute -right-1 -top-2 size-3 rounded-full bg-red-600"></span>
-            </div>
-            <Link href="/dashboard" className="hover:underline">
+              <span className="absolute -right-1 -top-2 size-3 animate-pulse rounded-full bg-red-600"></span>
+            </button>
+            <Link
+              href="/dashboard"
+              className="underline-offset-4 hover:underline"
+            >
               Dashboard
             </Link>
             <SignOutButton>
-              <span className="cursor-pointer hover:underline">Sign Out</span>
+              <span className="cursor-pointer underline-offset-4 hover:underline">
+                Sign Out
+              </span>
             </SignOutButton>
           </SignedIn>
           <SignedOut>
             <SignInButton>
-              <span className="cursor-pointer hover:underline">Sign In</span>
+              <span className="cursor-pointer underline-offset-4 hover:underline">
+                Sign In
+              </span>
             </SignInButton>
           </SignedOut>
         </div>
