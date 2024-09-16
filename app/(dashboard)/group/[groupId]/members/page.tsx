@@ -1,17 +1,31 @@
 import prisma from "@/db";
-import { MembershipWithUsers } from "@/types/types";
-import { Ellipsis } from "lucide-react";
+import {
+  MembershipWithUsers,
+  MembershipWithUsersAndGroup,
+} from "@/types/types";
 import Link from "next/link";
+
+import { currentUser } from "@clerk/nextjs/server";
+import { MemberRole } from "@prisma/client";
+import MemberOptions from "./_components/MemberOptions";
 
 export default async function Members({
   params,
 }: {
   params: { groupId: string };
 }) {
+  const user = await currentUser();
+
   const allMembersOfGroup = await prisma.membership.findMany({
     where: { groupId: params.groupId },
     include: { user: true, group: true },
   });
+
+  const userInMembership = allMembersOfGroup.find(
+    (membership) => membership.user.id === user?.id,
+  );
+
+  if (!userInMembership) return <div>You are not a member of this group</div>;
 
   if (!allMembersOfGroup) return <div>Group not found</div>;
 
@@ -37,15 +51,40 @@ export default async function Members({
       </div>
 
       <div className="mt-6 space-y-3">
-        {allMembersOfGroup.map((membership) => (
-          <MemberCard key={membership.user.id} membership={membership} />
-        ))}
+        {allMembersOfGroup
+          .filter((u) => u.role === MemberRole.ADMIN)
+          .map((membership) => (
+            <MemberCard
+              key={membership.user.id}
+              userId={user!.id}
+              membership={membership}
+              currentUserRole={userInMembership.role}
+            />
+          ))}
+        {allMembersOfGroup
+          .filter((u) => u.role === MemberRole.MEMBER)
+          .map((membership) => (
+            <MemberCard
+              key={membership.user.id}
+              userId={user!.id}
+              membership={membership}
+              currentUserRole={userInMembership.role}
+            />
+          ))}
       </div>
     </div>
   );
 }
 
-function MemberCard({ membership }: { membership: MembershipWithUsers }) {
+function MemberCard({
+  userId,
+  membership,
+  currentUserRole,
+}: {
+  userId: string;
+  membership: MembershipWithUsersAndGroup;
+  currentUserRole: MemberRole;
+}) {
   return (
     <div className="flex w-full items-center justify-between gap-3">
       <Link
@@ -54,36 +93,25 @@ function MemberCard({ membership }: { membership: MembershipWithUsers }) {
         key={membership.user.id}
         className="flex w-fit items-center gap-3"
       >
-        <h4 className="text-xl font-bold">{membership.user.name}</h4>
+        <h4 className="text-lg"> ~ {membership.user.name}</h4>
         <p className="text-sm">({membership.user.leetcodeId})</p>
+        {membership.role == MemberRole.ADMIN && (
+          <p className="rounded-full bg-gradient-to-r from-yellow-600 to-orange-600 px-4 py-1 text-[0.6rem] font-medium text-white">
+            Admin
+          </p>
+        )}
       </Link>
-      <div>
-        <MemberOptions membership={membership} />
-      </div>
+      {membership.group.creatorId != membership.userId &&
+        currentUserRole === MemberRole.ADMIN &&
+        membership.userId != userId && (
+          <div>
+            <MemberOptions
+              userId={userId}
+              membership={membership}
+              currentUserRole={currentUserRole}
+            />
+          </div>
+        )}
     </div>
-  );
-}
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-function MemberOptions({ membership }: { membership: MembershipWithUsers }) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Ellipsis />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="mr-10 text-left hover:bg-none">
-        <DropdownMenuLabel>Member Options</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Test Item</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 }

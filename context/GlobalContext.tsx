@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useClerk } from "@clerk/nextjs";
 import { User } from "@prisma/client";
 import { getUserDetails } from "@/app/_actions/user-actions";
+import { LoaderCircle } from "lucide-react";
 
 interface GlobalContextType {
   clientUser: User | null;
@@ -57,7 +58,12 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center">
+        <LoaderCircle className="size-10 animate-spin" />
+      </div>
+    );
 
   return (
     <GlobalContext.Provider

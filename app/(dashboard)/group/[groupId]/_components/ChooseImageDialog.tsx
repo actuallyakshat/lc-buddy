@@ -126,12 +126,12 @@ function SearchResultsPanel({
           }
         >
           <Image
-            src={result.src.original}
+            src={result.src.medium}
             alt={result.alt}
             width={600}
             height={600}
             quality={35}
-            className="aspect-square h-full w-full object-cover"
+            className="aspect-square h-full w-full bg-zinc-300 object-cover"
           />
         </div>
       ))}

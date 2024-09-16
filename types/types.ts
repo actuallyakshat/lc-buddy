@@ -16,3 +16,8 @@ export interface InviteWithGroupAndUser extends Invite {
 export interface GroupWithMembershipsAndUsers extends Group {
   memberships: MembershipWithUsers[];
 }
+
+export interface MembershipWithUsersAndGroup extends Membership {
+  user: User;
+  group: Group;
+}

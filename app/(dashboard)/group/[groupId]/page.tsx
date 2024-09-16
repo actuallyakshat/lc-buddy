@@ -1,7 +1,3 @@
-import prisma from "@/db";
-import React from "react";
-import AddFriendModal from "./_components/page";
-import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,13 +6,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Camera, Ellipsis } from "lucide-react";
-import DeleteGroupButton from "./_components/DeleteGroupButton";
-import ChooseImageDialog from "./_components/ChooseImageDialog";
-import EditGroupButton from "./_components/EditGroupButton";
-import { Group, MemberRole } from "@prisma/client";
+import prisma from "@/db";
 import { GroupWithMembershipsAndUsers } from "@/types/types";
 import { currentUser } from "@clerk/nextjs/server";
+import { MemberRole } from "@prisma/client";
+import { Ellipsis } from "lucide-react";
+import Link from "next/link";
+import ChooseImageDialog from "./_components/ChooseImageDialog";
+import DeleteGroupButton from "./_components/DeleteGroupButton";
+import EditGroupButton from "./_components/EditGroupButton";
+import AddFriendModal from "./_components/page";
 
 export default async function GroupPage({
   params,
