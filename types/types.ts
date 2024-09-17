@@ -21,3 +21,16 @@ export interface MembershipWithUsersAndGroup extends Membership {
   user: User;
   group: Group;
 }
+
+export interface SubmissionData {
+  username: string;
+  submissions: {
+    Monday: number;
+    Tuesday: number;
+    Wednesday: number;
+    Thursday: number;
+    Friday: number;
+    Saturday: number;
+    Sunday: number;
+  };
+}

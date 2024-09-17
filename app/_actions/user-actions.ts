@@ -1,6 +1,7 @@
 "use server";
 import prisma from "@/db";
 import { revalidatePath } from "next/cache";
+import { truncateByDomain } from "recharts/types/util/ChartUtils";
 
 interface GetUserDetailsProps {
   clerkId: string;
@@ -96,14 +97,8 @@ export async function updateLeetcodeId(clerkId: string, leetcodeId: string) {
     )
       throw new Error("Invalid Leetcode ID");
 
-    //GET URL FROM ENV
-    const response = await fetch(process.env.LEETCODE_API + leetcodeId);
-    const data = await response.json();
-
-    console.log(process.env.LEETCODE_API + leetcodeId);
-    console.log(data);
-
-    if (data.status == "error") throw new Error("Invalid Leetcode ID");
+    const isValidId = await checkIfValidLeetcodeId(leetcodeId);
+    if (!isValidId) throw new Error("Invalid Leetcode ID");
 
     const user = await prisma.user.findUnique({
       where: {
@@ -152,6 +147,9 @@ export async function updateUserDetails({
     )
       throw new Error("Invalid user details");
 
+    const isValidId = await checkIfValidLeetcodeId(leetcodeId);
+    if (!isValidId) throw new Error("Invalid Leetcode ID");
+
     const user = await prisma.user.findUnique({
       where: {
         id: clerkId,
@@ -178,4 +176,15 @@ export async function updateUserDetails({
     console.error(err.message);
     return { success: false, error: err.message };
   }
+}
+
+async function checkIfValidLeetcodeId(leetcodeId: string) {
+  const response = await fetch(process.env.LEETCODE_API + leetcodeId);
+  const data = await response.json();
+
+  console.log(process.env.LEETCODE_API + leetcodeId);
+  console.log(data);
+
+  if (data.status == "error") return false;
+  return true;
 }

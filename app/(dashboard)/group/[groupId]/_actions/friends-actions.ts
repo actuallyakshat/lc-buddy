@@ -17,7 +17,13 @@ export async function sendInvite({
       where: {
         id: groupId,
       },
+      include: {
+        memberships: true,
+      },
     });
+
+    if (group?.memberships?.length && group?.memberships?.length >= 10)
+      throw new Error("Sorry! We currently only allow 10 users per group.");
 
     if (!group) throw new Error("Group not found");
 
