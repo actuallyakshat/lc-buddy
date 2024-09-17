@@ -15,7 +15,7 @@ export default function GroupsGrid({
       <p className="pr-10 text-sm md:text-base">
         Accountability groups where you can compete with your friends and peers.
       </p>
-      <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-6 grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3">
         <AddGroup />
         {userGroups.map((membership) => (
           <GroupCard key={membership.group.id} group={membership.group} />

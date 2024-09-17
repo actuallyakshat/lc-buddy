@@ -23,10 +23,6 @@ export default function Navbar() {
         </Link>
         <div className="hidden items-center gap-4 text-sm font-medium lg:flex">
           <SignedIn>
-            <button className="relative mr-1.5 h-fit">
-              <Bell className="size-5" />
-              <span className="absolute -right-1 -top-2 size-3 animate-pulse rounded-full bg-red-600"></span>
-            </button>
             <Link
               href="/dashboard"
               className="underline-offset-4 hover:underline"
