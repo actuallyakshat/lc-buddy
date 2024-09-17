@@ -30,10 +30,10 @@ export default async function Members({
   if (!allMembersOfGroup) return <div>Group not found</div>;
 
   return (
-    <div className="px-16 pt-12">
-      <div className="flex w-full items-center justify-between">
+    <div className="page">
+      <div className="flex w-full items-center justify-between gap-6">
         <div>
-          <h2 className="text-3xl font-bold">
+          <h2 className="text-xl font-bold lg:text-3xl">
             Members of {allMembersOfGroup[0]?.group.name}
           </h2>
           <p className="text-sm font-medium text-muted-foreground">
@@ -42,7 +42,7 @@ export default async function Members({
         </div>
         <div className="flex items-center gap-2">
           <Link
-            className="text-sm font-medium underline-offset-4 hover:underline"
+            className="whitespace-nowrap text-sm font-medium underline-offset-4 hover:underline"
             href={`/group/${params.groupId}/`}
           >
             Go back
@@ -93,8 +93,10 @@ function MemberCard({
         key={membership.user.id}
         className="flex w-fit items-center gap-3"
       >
-        <h4 className="text-lg"> ~ {membership.user.name}</h4>
-        <p className="text-sm">({membership.user.leetcodeId})</p>
+        <h4 className="md:text-lg"> ~ {membership.user.name}</h4>
+        <p className="hidden text-sm md:block">
+          ({membership.user.leetcodeId})
+        </p>
         {membership.role == MemberRole.ADMIN && (
           <p className="rounded-full bg-gradient-to-r from-yellow-600 to-orange-600 px-4 py-1 text-[0.6rem] font-medium text-white">
             Admin

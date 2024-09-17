@@ -13,7 +13,7 @@ export default async function Dashboard() {
   });
 
   return (
-    <div className="px-16 pt-12">
+    <div className="page">
       <GroupsGrid userGroups={userGroups} />
     </div>
   );

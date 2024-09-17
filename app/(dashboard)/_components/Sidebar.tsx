@@ -22,7 +22,7 @@ const SIDEBAR_ITEMS = [
 
 export default function Sidebar() {
   return (
-    <aside className="thin-scrollbar fixed left-0 z-[10] h-screen w-80 overflow-y-auto border-r bg-background pt-16">
+    <aside className="thin-scrollbar fixed left-0 z-[10] hidden h-screen w-80 overflow-y-auto border-r bg-background pt-16 lg:block">
       <div className="flex h-full flex-col justify-between gap-4 py-6">
         <div>
           <span className="px-6 text-sm font-medium text-muted-foreground">

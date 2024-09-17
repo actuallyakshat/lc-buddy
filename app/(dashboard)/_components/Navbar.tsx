@@ -2,11 +2,12 @@ import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
 import { Bell } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import NavbarMobile from "./NavbarMobile";
 
 export default function Navbar() {
   return (
     <nav className="fixed z-[11] h-16 w-full border-b bg-background">
-      <div className="mx-auto flex h-full w-full max-w-screen-2xl items-center justify-between px-5">
+      <div className="relative mx-auto flex h-full w-full max-w-screen-2xl items-center justify-between px-5">
         <Link
           href={"/"}
           className="flex items-center gap-3 text-lg font-extrabold"
@@ -20,7 +21,7 @@ export default function Navbar() {
           />
           <h2 className="font-medium">LC Buddy</h2>
         </Link>
-        <div className="flex items-center gap-4 text-sm font-medium">
+        <div className="hidden items-center gap-4 text-sm font-medium lg:flex">
           <SignedIn>
             <button className="relative mr-1.5 h-fit">
               <Bell className="size-5" />
@@ -53,6 +54,7 @@ export default function Navbar() {
             </Link>
           </SignedOut>
         </div>
+        <NavbarMobile />
       </div>
     </nav>
   );

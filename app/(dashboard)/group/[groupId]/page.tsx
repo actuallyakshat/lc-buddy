@@ -22,7 +22,7 @@ export default async function GroupPage({
 }: {
   params: { groupId: string };
 }) {
-  const user = await currentUser();
+  const user = await currentUser(); 
   const id = params.groupId as string;
   const groupDetails = await prisma.group.findUnique({
     where: { id },
@@ -45,8 +45,8 @@ export default async function GroupPage({
     <div>
       <div
         className={`group relative min-h-[300px] w-full ${
-          groupDetails?.headerImageURL ? "group-header-image" : "bg-zinc-200"
-        }`}
+          groupDetails?.headerImageURL ? "group-header-image" : ""
+        } bg-zinc-300`}
         style={
           groupDetails?.headerImageURL
             ? { backgroundImage: `url('${groupDetails.headerImageURL}')` }
@@ -55,10 +55,12 @@ export default async function GroupPage({
       >
         <ChooseImageDialog groupId={id} />
       </div>
-      <div className="px-16 pt-12">
+      <div className="page">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-3xl font-bold">{groupDetails?.name}</h2>
+            <h2 className="text-2xl font-bold md:text-3xl">
+              {groupDetails?.name}
+            </h2>
             <p className="text-sm font-medium text-muted-foreground">
               {groupDetails?.description}
             </p>

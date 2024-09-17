@@ -7,7 +7,7 @@ export default async function Buddies() {
   const data = await getAllInvites({ userId: user!.id });
   console.log(data);
   return (
-    <div className="px-16 pt-12">
+    <div className="page">
       <h2 className="text-3xl font-bold">All Friends</h2>
     </div>
   );

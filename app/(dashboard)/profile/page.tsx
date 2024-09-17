@@ -43,7 +43,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="px-16 pt-12">
+    <div className="page">
       <h1 className="text-3xl font-bold">Profile</h1>
       <p className="text-sm font-medium text-muted-foreground">
         Edit your personal details here

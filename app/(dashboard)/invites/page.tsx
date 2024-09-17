@@ -10,7 +10,7 @@ export default async function Invites() {
   if (!response.success) return <div>Error</div>;
   if (!allInvites) return <div>Error</div>;
   return (
-    <div className="px-16 pt-12">
+    <div className="page">
       <h1 className="text-3xl font-bold">Incoming Invites</h1>
       <p className="text-sm font-medium text-muted-foreground">
         Invitations you have received to join accountability groups
