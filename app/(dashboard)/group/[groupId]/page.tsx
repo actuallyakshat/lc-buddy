@@ -53,8 +53,6 @@ export default async function GroupPage({
     };
   });
 
-  console.log("IDs", usersLeetcodeId);
-
   //TODO: Uncomment in production
   // const usersLeetcodeData = await getLeetcodeUserData(usersLeetcodeId);
 
@@ -627,8 +625,8 @@ export default async function GroupPage({
           </div>
         </div>
         <WeeklySubmissionsChart data={solvedThisWeek} />
-        <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
-          <DifficultyBifurcationBarChart />
+        <div className="grid w-full grid-cols-1 gap-4 xl:grid-cols-2">
+          <DifficultyBifurcationBarChart data={usersLeetcodeData} />
           <SubmissionsConrtibutionPieChart data={solvedThisWeek} />
         </div>
       </div>

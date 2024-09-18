@@ -26,11 +26,6 @@ const SIDEBAR_ITEMS = [
     icon: <Terminal className="size-5 stroke-[2px]" />,
   },
   {
-    name: "All Friends",
-    href: "/friends",
-    icon: <Handshake className="size-5" />,
-  },
-  {
     name: "Invites",
     href: "/invites",
     icon: <MailPlus className="size-5" />,

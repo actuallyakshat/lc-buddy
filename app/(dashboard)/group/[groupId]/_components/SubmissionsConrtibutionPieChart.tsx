@@ -22,7 +22,6 @@ import { COLORS, transformSubmissionsToChartData } from "@/lib/utils";
 
 const chartConfig = {} satisfies ChartConfig;
 
-//get week number of the year
 function getDateWeek(date?: Date): number {
   const currentDate: Date = date instanceof Date ? date : new Date();
   const januaryFirst: Date = new Date(currentDate.getFullYear(), 0, 1);
@@ -77,18 +76,14 @@ function getUserSubmissionsSummaries(data: any): UserSubmissionSummary[] {
       0,
     ),
   }));
-  console.log("User submission summaries:", result);
   return result;
 }
 export function SubmissionsConrtibutionPieChart(data: any) {
-  console.log("DATA", data);
   const total = sumAllSubmissions(data.data);
-  console.log("total: ", total);
   const pieChartData = getUserSubmissionsSummaries(data);
-  console.log("final", pieChartData);
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex h-fit flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Total Submissions</CardTitle>
         <CardDescription>Week {getDateWeek(new Date())}</CardDescription>
@@ -106,7 +101,7 @@ export function SubmissionsConrtibutionPieChart(data: any) {
               nameKey="name"
               innerRadius={60}
               outerRadius={80}
-              strokeWidth={10}
+              strokeWidth={20}
             >
               <Label
                 content={({ viewBox }) => {
