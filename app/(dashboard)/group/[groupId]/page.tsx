@@ -19,6 +19,8 @@ import AddFriendModal from "./_components/page";
 import { getLeetcodeUserData } from "./_actions/leetcode-actions";
 import { getSolvedQuestionsThisWeek } from "@/lib/utils";
 import { WeeklySubmissionsChart } from "./_components/WeeklySubmissionsChart";
+import { SubmissionsConrtibutionPieChart } from "./_components/SubmissionsConrtibutionPieChart";
+import { DifficultyBifurcationBarChart } from "./_components/DifficultyBifurcationBarChart";
 
 export default async function GroupPage({
   params,
@@ -593,7 +595,7 @@ export default async function GroupPage({
   );
 
   return (
-    <div>
+    <div className="thin-scrollbar pb-12">
       <div
         className={`group relative min-h-[300px] w-full ${
           groupDetails?.headerImageURL ? "group-header-image" : ""
@@ -606,7 +608,7 @@ export default async function GroupPage({
       >
         <ChooseImageDialog groupId={id} />
       </div>
-      <div className="page">
+      <div className="page thin-scrollbar">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold md:text-3xl">
@@ -624,8 +626,10 @@ export default async function GroupPage({
             />
           </div>
         </div>
-        <div>
-          <WeeklySubmissionsChart data={solvedThisWeek} />
+        <WeeklySubmissionsChart data={solvedThisWeek} />
+        <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
+          <DifficultyBifurcationBarChart />
+          <SubmissionsConrtibutionPieChart data={solvedThisWeek} />
         </div>
       </div>
     </div>
@@ -642,7 +646,7 @@ function OptionsMenu({
   groupDetails: GroupWithMembershipsAndUsers;
 }) {
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger>
         <Ellipsis />
       </DropdownMenuTrigger>

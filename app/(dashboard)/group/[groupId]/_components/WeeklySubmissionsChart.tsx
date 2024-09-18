@@ -18,20 +18,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { transformSubmissionsToChartData } from "@/lib/utils";
-
-const colors = [
-  "#FF6384",
-  "#36A2EB",
-  "#FFCE56",
-  "#4BC0C0",
-  "#9966FF",
-  "#FF9F40",
-  "#E7FF9F",
-  "#40C0FF",
-  "#FFB740",
-  "#B0E0E6",
-];
+import { COLORS, transformSubmissionsToChartData } from "@/lib/utils";
 
 const chartConfig = {} satisfies ChartConfig;
 
@@ -74,9 +61,9 @@ export function WeeklySubmissionsChart(data: any) {
                   key={index}
                   dataKey={userData.username}
                   type="monotone"
-                  fill={colors[index]}
+                  fill={COLORS[index % 10]}
                   fillOpacity={0.4}
-                  stroke={colors[index]}
+                  stroke={COLORS[index % 10]}
                   stackId="a"
                 />
               </>

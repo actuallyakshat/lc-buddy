@@ -96,7 +96,7 @@ export default function MemberOptions({
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger>
         <Ellipsis />
       </DropdownMenuTrigger>

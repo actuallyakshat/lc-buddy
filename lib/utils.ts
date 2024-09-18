@@ -90,3 +90,16 @@ export function transformSubmissionsToChartData(
 
   return chartData;
 }
+
+export const COLORS = [
+  "#FF6384",
+  "#36A2EB",
+  "#FFCE56",
+  "#4BC0C0",
+  "#9966FF",
+  "#FF9F40",
+  "#E7FF9F",
+  "#40C0FF",
+  "#FFB740",
+  "#B0E0E6",
+];

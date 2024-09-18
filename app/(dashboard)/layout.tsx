@@ -14,10 +14,10 @@ export default async function DashboardLayout({
   });
 
   return (
-    <div>
+    <div className="thin-scrollbar">
       <Sidebar />
       {userDetails?.leetcodeId && (
-        <main className="w-full pt-16 lg:pl-80">{children}</main>
+        <main className="thin-scrollbar w-full pt-16 lg:pl-80">{children}</main>
       )}
       {!userDetails?.leetcodeId && <LinkLeetcodeAccount userId={user!.id} />}
     </div>
