@@ -13,12 +13,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { MemberRole } from "@prisma/client";
 import { Camera, LoaderCircle } from "lucide-react";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export default function ChooseImageDialog({ groupId }: { groupId: string }) {
+export default function ChooseImageDialog({
+  groupId,
+  userRole,
+}: {
+  groupId: string;
+  userRole: MemberRole;
+}) {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -46,11 +53,13 @@ export default function ChooseImageDialog({ groupId }: { groupId: string }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <button className="absolute flex size-full items-center justify-center bg-black/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-          <Camera className="stroke-white" />
-        </button>
-      </DialogTrigger>
+      {userRole === MemberRole.ADMIN && (
+        <DialogTrigger asChild>
+          <button className="absolute flex size-full items-center justify-center bg-black/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+            <Camera className="stroke-white" />
+          </button>
+        </DialogTrigger>
+      )}
       <DialogContent className="noscrollbar max-h-[600px] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Update Image</DialogTitle>

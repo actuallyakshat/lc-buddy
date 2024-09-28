@@ -81,6 +81,11 @@ function getUserSubmissionsSummaries(data: any): UserSubmissionSummary[] {
 export function SubmissionsConrtibutionPieChart(data: any) {
   const total = sumAllSubmissions(data.data);
   const pieChartData = getUserSubmissionsSummaries(data);
+  const isDataEmpty = pieChartData
+    .map((data: any) => data.value)
+    .every((value) => value === 0);
+
+  console.log(isDataEmpty);
 
   return (
     <Card className="flex h-fit flex-col">
@@ -89,67 +94,76 @@ export function SubmissionsConrtibutionPieChart(data: any) {
         <CardDescription>Week {getDateWeek(new Date())}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
-          <PieChart>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Pie
-              data={pieChartData}
-              dataKey="value"
-              nameKey="name"
-              innerRadius={60}
-              outerRadius={80}
-              strokeWidth={20}
-            >
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
+        {!isDataEmpty && (
+          <ChartContainer
+            config={chartConfig}
+            className="mx-auto aspect-square max-h-[300px]"
+          >
+            <PieChart>
+              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+              <Pie
+                data={pieChartData}
+                dataKey="value"
+                nameKey="name"
+                innerRadius={60}
+                outerRadius={80}
+                strokeWidth={20}
+              >
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
                         >
-                          {total}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
-                          Submissions
-                        </tspan>
-                      </text>
-                    );
-                  }
-                }}
-              />
-              {pieChartData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            className="fill-foreground text-3xl font-bold"
+                          >
+                            {total}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 24}
+                            className="fill-muted-foreground"
+                          >
+                            Submissions
+                          </tspan>
+                        </text>
+                      );
+                    }
+                  }}
                 />
-              ))}
-            </Pie>
-          </PieChart>
-        </ChartContainer>
+                {pieChartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ChartContainer>
+        )}
+        {isDataEmpty && (
+          <div className="flex items-center justify-center">
+            <div className="text-center text-muted-foreground">
+              This group has made no submissions this week.
+            </div>
+          </div>
+        )}
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
+      {/* <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
           Showing total visitors for the last 6 months
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

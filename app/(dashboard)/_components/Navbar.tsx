@@ -7,7 +7,7 @@ import NavbarMobile from "./NavbarMobile";
 export default function Navbar() {
   return (
     <nav className="fixed z-[11] h-16 w-full border-b bg-background">
-      <div className="relative mx-auto flex h-full w-full max-w-screen-2xl items-center justify-between px-5">
+      <div className="relative mx-auto flex h-full w-full max-w-screen-lg items-center justify-between px-5 2xl:max-w-screen-xl">
         <Link
           href={"/"}
           className="flex items-center gap-3 text-lg font-extrabold"

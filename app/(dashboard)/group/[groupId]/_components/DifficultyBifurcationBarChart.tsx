@@ -106,6 +106,7 @@ export function DifficultyBifurcationBarChart({ data }: { data: any }) {
             <YAxis />
             <Tooltip />
             <Bar
+              className="rounded-lg"
               dataKey={selectedDifficulty}
               fill={chartConfig[selectedDifficulty].color}
               name={chartConfig[selectedDifficulty].label}

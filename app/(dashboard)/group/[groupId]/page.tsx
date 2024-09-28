@@ -42,6 +42,8 @@ export default async function GroupPage({
     (membership) => membership.user.id === user?.id,
   );
 
+  console.log(userInMembership);
+
   if (!userInMembership) return <div>You are not a member of this group</div>;
 
   if (!groupDetails) return <div>Group not found</div>;
@@ -73,7 +75,7 @@ export default async function GroupPage({
             : {}
         }
       >
-        <ChooseImageDialog groupId={id} />
+        <ChooseImageDialog groupId={id} userRole={userInMembership.role} />
       </div>
       <div className="page thin-scrollbar">
         <div className="flex items-center justify-between">
