@@ -92,9 +92,9 @@ export function transformSubmissionsToChartData(
 }
 
 export const COLORS = [
-  "#FF6384",
-  "#36A2EB",
   "#FFCE56",
+  "#36A2EB",
+  "#FF6384",
   "#4BC0C0",
   "#9966FF",
   "#FF9F40",

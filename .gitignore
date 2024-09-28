@@ -20,6 +20,9 @@
 .DS_Store
 *.pem
 
+# migrations   
+prisma/migrations
+
 # debug
 npm-debug.log*
 yarn-debug.log*

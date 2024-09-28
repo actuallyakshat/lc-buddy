@@ -60,10 +60,10 @@ export function WeeklySubmissionsChart(data: any) {
                 <Area
                   key={index}
                   dataKey={userData.username}
-                  type="monotone"
+                  type="linear"
                   fill={COLORS[index % 10]}
                   fillOpacity={0.4}
-                  stroke={COLORS[index % 10]}
+                  stroke={"none"}
                   stackId="a"
                 />
               </>

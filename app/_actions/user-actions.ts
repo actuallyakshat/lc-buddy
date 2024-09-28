@@ -170,6 +170,7 @@ export async function updateUserDetails({
       },
     });
 
+    revalidatePath("/dashboard");
     return { success: true, data: updatedUser };
   } catch (error) {
     const err = error as Error;
@@ -179,10 +180,9 @@ export async function updateUserDetails({
 }
 
 async function checkIfValidLeetcodeId(leetcodeId: string) {
-  const response = await fetch(process.env.LEETCODE_API + leetcodeId);
+  const response = await fetch(process.env.LEETCODE_API + "/" + leetcodeId);
   const data = await response.json();
 
-  console.log(process.env.LEETCODE_API + leetcodeId);
   console.log(data);
 
   if (data.status == "error") return false;

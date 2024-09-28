@@ -28,6 +28,9 @@ export default function Profile() {
   async function handleUpdateUser() {
     if (!clientUser) return;
     toast.loading("Updating user details", { id: "update-user-details" });
+    console.log("name", name);
+    console.log("leetcodeId", leetcodeId);
+
     const response = await updateUserDetails({
       clerkId: clientUser.id,
       name,
