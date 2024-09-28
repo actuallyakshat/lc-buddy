@@ -14,8 +14,6 @@ const agent = new https.Agent({
 export async function getLeetcodeUserData(
   leetcodeIdAndName: LeetcodeIdAndName[],
 ) {
-  console.log("Process.env.LEETCODE_API", process.env.LEETCODE_API);
-
   const leetcodeUserData = await Promise.all(
     leetcodeIdAndName.map(async (user) => {
       const response = await axios.get(
@@ -29,6 +27,5 @@ export async function getLeetcodeUserData(
     }),
   );
 
-  console.log("leetcodeUserData", leetcodeUserData);
   return leetcodeUserData;
 }

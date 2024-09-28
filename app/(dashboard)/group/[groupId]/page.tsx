@@ -15,7 +15,7 @@ import Link from "next/link";
 import ChooseImageDialog from "./_components/ChooseImageDialog";
 import DeleteGroupButton from "./_components/DeleteGroupButton";
 import EditGroupButton from "./_components/EditGroupButton";
-import AddFriendModal from "./_components/page";
+import AddFriendModal from "./_components/AddFriendModal";
 import { getLeetcodeUserData } from "./_actions/leetcode-actions";
 import { getSolvedQuestionsThisWeek } from "@/lib/utils";
 import { WeeklySubmissionsChart } from "./_components/WeeklySubmissionsChart";

@@ -38,7 +38,6 @@ export default function ChooseImageDialog({ groupId }: { groupId: string }) {
     setLoading(true);
     searchHeaderImage({ searchQuery: debouncedQuery }).then((res) => {
       if (res.success) {
-        console.log(res.data.photos);
         setSearchResults(res.data.photos);
       }
     });

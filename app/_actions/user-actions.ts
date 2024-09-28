@@ -183,8 +183,6 @@ async function checkIfValidLeetcodeId(leetcodeId: string) {
   const response = await fetch(process.env.LEETCODE_API + "/" + leetcodeId);
   const data = await response.json();
 
-  console.log(data);
-
   if (data.status == "error") return false;
   return true;
 }
