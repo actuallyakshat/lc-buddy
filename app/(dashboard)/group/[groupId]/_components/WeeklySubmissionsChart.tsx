@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, Tooltip } from "recharts";
 
 import {
   Card,
@@ -14,15 +14,55 @@ import {
 import {
   ChartConfig,
   ChartContainer,
-  ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { COLORS, transformSubmissionsToChartData } from "@/lib/utils";
 
 const chartConfig = {} satisfies ChartConfig;
 
+// Define the props for the CustomTooltip
+interface CustomTooltipProps {
+  active: boolean;
+  payload: {
+    name: string;
+    value: number;
+    color: string;
+    payload: { day: string };
+  }[];
+}
+
+const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded border border-gray-300 bg-white p-3">
+        <h4 className="font-medium">{`Submissions on ${payload[0].payload.day}`}</h4>
+        {payload.map((entry, index) => {
+          if (entry.value >= 0) {
+            return (
+              <p
+                key={`item-${index}`}
+                style={{ color: entry.color }}
+                className="mt-1.5"
+              >
+                {`${entry.name}: ${entry.value}`}
+              </p>
+            );
+          }
+          return null; // Skip rendering for users with zero submissions
+        })}
+      </div>
+    );
+  }
+  return null;
+};
+
 export function WeeklySubmissionsChart(data: any) {
   const chartData = transformSubmissionsToChartData(data.data);
+  console.log(chartData);
+
+  // Get the list of users with their submission counts
+  const users = Object.keys(chartData[0]).filter((key) => key !== "day");
+
   return (
     <Card className="my-8">
       <CardHeader>
@@ -50,22 +90,32 @@ export function WeeklySubmissionsChart(data: any) {
               tickFormatter={(value) => value.slice(0, 3)}
             />
 
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <Tooltip
+              content={<CustomTooltip active={false} payload={[]} />}
+              cursor={false}
+            />
 
-            {data.data.map((userData: any, index: number) => {
-              return (
-                <Area
-                  key={index}
-                  dataKey={userData.username}
-                  type="linear"
-                  fill={COLORS[index % 10]}
-                  fillOpacity={0.4}
-                  stroke={"none"}
-                  stackId="a"
-                  dot={false}
-                  activeDot={true}
-                />
+            {users.map((username, index) => {
+              const hasSubmissions = chartData.some(
+                (dataPoint) => Number(dataPoint[username]) > 0, // Ensure comparison with a number
               );
+
+              if (hasSubmissions) {
+                return (
+                  <Area
+                    key={index}
+                    dataKey={username}
+                    type="linear"
+                    fill={COLORS[index % 10]}
+                    fillOpacity={0.5}
+                    stroke={"none"}
+                    stackId="a"
+                    dot={false}
+                    activeDot={true}
+                  />
+                );
+              }
+              return null; // Skip rendering for users with zero submissions
             })}
           </AreaChart>
         </ChartContainer>
