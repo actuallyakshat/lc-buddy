@@ -1,7 +1,6 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis, Tooltip } from "recharts";
+import { Area, AreaChart, CartesianGrid, Tooltip, XAxis } from "recharts";
 
 import {
   Card,
@@ -11,11 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { COLORS, transformSubmissionsToChartData } from "@/lib/utils";
 
 const chartConfig = {} satisfies ChartConfig;
@@ -77,8 +72,9 @@ export function WeeklySubmissionsChart(data: any) {
             accessibilityLayer
             data={chartData}
             margin={{
-              left: 12,
-              right: 12,
+              top: 10,
+              left: 20,
+              right: 20,
             }}
           >
             <CartesianGrid vertical={false} />
