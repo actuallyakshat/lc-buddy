@@ -75,7 +75,7 @@ export default function EditGroupButton({
             defaultValue={groupDetails?.description || ""}
             onChange={(e) => setDescription(e.target.value)}
             maxLength={1000}
-            className="thin-scrollbar max-h-40 overflow-y-auto"
+            className="max-h-40 overflow-y-auto"
           />
           <Button typeof="submit" className="w-full">
             Save

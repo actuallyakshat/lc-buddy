@@ -1,0 +1,3 @@
+- [ ] Check validity of leetcode id before updating user
+- [ ] Handle cold start delay of the leetcode-data-scrapper api
+- [ ] Enhance UI of the group page.

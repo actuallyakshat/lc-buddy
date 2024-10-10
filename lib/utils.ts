@@ -44,16 +44,19 @@ export function getSolvedQuestionsThisWeek(
   endOfWeek.setHours(23, 59, 59, 999);
 
   // Iterate over the submissionCalendar and filter out undefined values
-  Object.entries(submissionCalendar).forEach(([timestamp, count]) => {
-    if (count !== undefined) {
-      const date = new Date(parseInt(timestamp) * 1000); // Convert Unix timestamp to JS date
+  if (submissionCalendar) {
+    // Check if submissionCalendar is not null or undefined
+    Object.entries(submissionCalendar).forEach(([timestamp, count]) => {
+      if (count !== undefined) {
+        const date = new Date(parseInt(timestamp) * 1000); // Convert Unix timestamp to JS date
 
-      if (date >= startOfWeek && date <= endOfWeek) {
-        const dayName = daysOfWeek[date.getDay()]; // Get the day name
-        solvedThisWeek[dayName] += count; // Add the count to the corresponding day
+        if (date >= startOfWeek && date <= endOfWeek) {
+          const dayName = daysOfWeek[date.getDay()]; // Get the day name
+          solvedThisWeek[dayName] += count; // Add the count to the corresponding day
+        }
       }
-    }
-  });
+    });
+  }
 
   return {
     username: username,

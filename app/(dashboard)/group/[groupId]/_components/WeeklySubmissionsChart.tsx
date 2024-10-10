@@ -7,7 +7,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -51,12 +50,10 @@ export function WeeklySubmissionsChart(data: any) {
               tickFormatter={(value) => value.slice(0, 3)}
             />
 
-            {data.data.map((userData: any, index: number) => (
-              <>
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent />}
-                />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+
+            {data.data.map((userData: any, index: number) => {
+              return (
                 <Area
                   key={index}
                   dataKey={userData.username}
@@ -65,26 +62,14 @@ export function WeeklySubmissionsChart(data: any) {
                   fillOpacity={0.4}
                   stroke={"none"}
                   stackId="a"
+                  dot={false}
+                  activeDot={true}
                 />
-              </>
-            ))}
+              );
+            })}
           </AreaChart>
         </ChartContainer>
       </CardContent>
-
-      {/* TODO: Add chart legend */}
-      {/* <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2024
-            </div>
-          </div>
-        </div>
-      </CardFooter> */}
     </Card>
   );
 }

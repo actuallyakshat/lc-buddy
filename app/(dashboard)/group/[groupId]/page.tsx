@@ -64,7 +64,7 @@ export default async function GroupPage({
   );
 
   return (
-    <div className="thin-scrollbar pb-12">
+    <div className="pb-12">
       <div
         className={`group relative min-h-[300px] w-full ${
           groupDetails?.headerImageURL ? "group-header-image" : ""
@@ -77,7 +77,7 @@ export default async function GroupPage({
       >
         <ChooseImageDialog groupId={id} userRole={userInMembership.role} />
       </div>
-      <div className="page thin-scrollbar">
+      <div className="page">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold md:text-3xl">

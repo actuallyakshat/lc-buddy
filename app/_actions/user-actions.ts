@@ -148,6 +148,7 @@ export async function updateUserDetails({
       throw new Error("Invalid user details");
 
     const isValidId = await checkIfValidLeetcodeId(leetcodeId);
+    console.log("IS VALID --> ", isValidId);
     if (!isValidId) throw new Error("Invalid Leetcode ID");
 
     const user = await prisma.user.findUnique({
@@ -170,7 +171,7 @@ export async function updateUserDetails({
       },
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/profile");
     return { success: true, data: updatedUser };
   } catch (error) {
     const err = error as Error;
@@ -181,8 +182,15 @@ export async function updateUserDetails({
 
 async function checkIfValidLeetcodeId(leetcodeId: string) {
   const response = await fetch(process.env.LEETCODE_API + "/" + leetcodeId);
+  
+  // Check if the response was successful
+  if (!response.ok) return false;
+
   const data = await response.json();
 
-  if (data.status == "error") return false;
-  return true;
+  // Check if the data contains errors
+  if (data?.errors) return false;
+
+  // Check if the user is present in the data
+  return Boolean(data?.username);
 }

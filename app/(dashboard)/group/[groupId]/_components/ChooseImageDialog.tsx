@@ -60,7 +60,7 @@ export default function ChooseImageDialog({
           </button>
         </DialogTrigger>
       )}
-      <DialogContent className="noscrollbar max-h-[600px] overflow-y-scroll">
+      <DialogContent className="max-h-[600px] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Update Image</DialogTitle>
           <DialogDescription>
@@ -71,6 +71,7 @@ export default function ChooseImageDialog({
           placeholder="Programming Aesthetics"
           type="text"
           onChange={(e) => setQuery(e.target.value)}
+          className="py-2"
         />
         {searchResults.length > 0 && (
           <SearchResultsPanel
@@ -125,7 +126,7 @@ function SearchResultsPanel({
   }
 
   return (
-    <div className="noscrollbar mt-5 grid grid-cols-2 gap-2 overflow-y-scroll">
+    <div className="mt-5 grid grid-cols-2 gap-2 overflow-y-scroll">
       {data.map((result) => (
         <div
           className="cursor-pointer"

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { TrendingUp } from "lucide-react";
-import { Cell, Label, Pie, PieChart } from "recharts";
+import { Cell, Label, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 import {
   Card,
@@ -78,6 +78,7 @@ function getUserSubmissionsSummaries(data: any): UserSubmissionSummary[] {
   }));
   return result;
 }
+
 export function SubmissionsConrtibutionPieChart(data: any) {
   const total = sumAllSubmissions(data.data);
   const pieChartData = getUserSubmissionsSummaries(data);
@@ -85,29 +86,28 @@ export function SubmissionsConrtibutionPieChart(data: any) {
     .map((data: any) => data.value)
     .every((value) => value === 0);
 
-  console.log(isDataEmpty);
-
   return (
-    <Card className="flex h-fit flex-col">
+    <Card className="flex h-full flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Total Submissions</CardTitle>
         <CardDescription>Week {getDateWeek(new Date())}</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
-        {!isDataEmpty && (
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square max-h-[300px]"
-          >
-            <PieChart>
-              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+      <CardContent className="min-h-[400px] flex-1 md:min-h-0">
+        {!isDataEmpty ? (
+          <ChartContainer config={chartConfig} className="h-full w-full">
+            <PieChart width={400} height={400}>
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent className="w-full max-w-full" />}
+              />
               <Pie
                 data={pieChartData}
                 dataKey="value"
                 nameKey="name"
-                innerRadius={60}
-                outerRadius={80}
-                strokeWidth={20}
+                cx="50%"
+                cy="50%"
+                innerRadius="50%"
+                outerRadius="70%"
               >
                 <Label
                   content={({ viewBox }) => {
@@ -147,23 +147,14 @@ export function SubmissionsConrtibutionPieChart(data: any) {
               </Pie>
             </PieChart>
           </ChartContainer>
-        )}
-        {isDataEmpty && (
-          <div className="flex items-center justify-center">
+        ) : (
+          <div className="flex h-full items-center justify-center">
             <div className="text-center text-muted-foreground">
               This group has made no submissions this week.
             </div>
           </div>
         )}
       </CardContent>
-      {/* <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter> */}
     </Card>
   );
 }

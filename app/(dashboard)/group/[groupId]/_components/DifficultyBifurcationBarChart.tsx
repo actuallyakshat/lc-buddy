@@ -9,6 +9,7 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  TooltipProps,
 } from "recharts";
 
 import {
@@ -18,6 +19,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 
 const chartConfig = {
   easy: {
@@ -32,6 +37,27 @@ const chartConfig = {
     label: "Hard",
     color: "#f63737",
   },
+};
+
+// Custom Tooltip component with generics
+const CustomTooltip = <TValue extends ValueType, TName extends NameType>({
+  active,
+  payload,
+  label,
+}: TooltipProps<TValue, TName>) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded-lg border border-gray-300 bg-white p-2 shadow-lg">
+        <p className="text-xs text-gray-500">{label}</p>
+        <p className="font-bold">{payload[0].name}</p>
+        <p className="text-sm text-gray-600">
+          {`${payload[0].name}: ${payload[0].value}`}
+        </p>
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export function DifficultyBifurcationBarChart({ data }: { data: any }) {
@@ -95,16 +121,21 @@ export function DifficultyBifurcationBarChart({ data }: { data: any }) {
           <BarChart
             data={chartData}
             margin={{
-              top: 20,
+              top: 30,
               right: 30,
-              left: 20,
-              bottom: 5,
+              left: -20, // Reduced left margin
+              bottom: 0,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
+            {/* <CartesianGrid strokeDasharray="3 3" /> */}
+            <XAxis
+              dataKey="name"
+              tick={{ fontSize: 12, fill: "#333" }} // Customize tick style
+            />
+            <YAxis
+              tick={{ fontSize: 12, fill: "#333" }} // Customize tick style
+            />
+            <Tooltip content={<CustomTooltip />} />
             <Bar
               className="rounded-lg"
               dataKey={selectedDifficulty}
