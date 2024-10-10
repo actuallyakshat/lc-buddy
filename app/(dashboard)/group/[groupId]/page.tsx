@@ -7,20 +7,46 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import prisma from "@/db";
-import { GroupWithMembershipsAndUsers } from "@/types/types";
+import { getSolvedQuestionsThisWeek } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs/server";
 import { MemberRole } from "@prisma/client";
 import { Ellipsis } from "lucide-react";
 import Link from "next/link";
+import AddFriendModal from "./_components/AddFriendModal";
 import ChooseImageDialog from "./_components/ChooseImageDialog";
 import DeleteGroupButton from "./_components/DeleteGroupButton";
-import EditGroupButton from "./_components/EditGroupButton";
-import AddFriendModal from "./_components/AddFriendModal";
-import { getLeetcodeUserData } from "./_actions/leetcode-actions";
-import { getSolvedQuestionsThisWeek } from "@/lib/utils";
-import { WeeklySubmissionsChart } from "./_components/WeeklySubmissionsChart";
-import { SubmissionsConrtibutionPieChart } from "./_components/SubmissionsConrtibutionPieChart";
 import { DifficultyBifurcationBarChart } from "./_components/DifficultyBifurcationBarChart";
+import EditGroupButton from "./_components/EditGroupButton";
+import { SubmissionsConrtibutionPieChart } from "./_components/SubmissionsConrtibutionPieChart";
+import { WeeklySubmissionsChart } from "./_components/WeeklySubmissionsChart";
+
+// Retry logic for server-side fetching
+async function fetchWithExtendedRetry(
+  url: string,
+  options: RequestInit,
+  maxRetries = 3,
+  backoffTime = 1000,
+) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok) {
+        const data = await response.json();
+        return { status: response.status, data };
+      } else {
+        console.error(`Attempt ${attempt + 1} failed: ${response.statusText}`);
+      }
+    } catch (error: any) {
+      console.error(
+        `Attempt ${attempt + 1} encountered an error: ${error.message}`,
+      );
+    }
+    await new Promise((resolve) =>
+      setTimeout(resolve, backoffTime * (attempt + 1)),
+    );
+  }
+  return { status: 0, error: `Failed after ${maxRetries} attempts` };
+}
 
 export default async function GroupPage({
   params,
@@ -28,52 +54,41 @@ export default async function GroupPage({
   params: { groupId: string };
 }) {
   const user = await currentUser();
-  const id = params.groupId as string;
+  const groupId = params.groupId;
+
   const groupDetails = await prisma.group.findUnique({
-    where: { id },
-    include: {
-      memberships: {
-        include: { user: true },
-      },
-    },
+    where: { id: groupId },
+    include: { memberships: { include: { user: true } } },
   });
 
-  const userInMembership = groupDetails?.memberships.find(
+  if (!groupDetails) return <div>Group not found</div>;
+
+  const userInMembership = groupDetails.memberships.find(
     (membership) => membership.user.id === user?.id,
   );
-
   if (!userInMembership) return <div>You are not a member of this group</div>;
-  if (!groupDetails) return <div>Group not found</div>;
 
   const usersLeetcodeId = groupDetails.memberships.map((membership) => ({
     id: membership.user.leetcodeId,
     name: membership.user.name,
   }));
 
-  // Fetch LeetCode user data with a fallback to avoid breaking the page
-  // let usersLeetcodeData = [];
-  // try {
-  //   usersLeetcodeData = await getLeetcodeUserData(usersLeetcodeId);
-  // } catch (error) {
-  //   console.error("Error fetching LeetCode data:", error);
-  // }
+  // Fetch LeetCode user data with retry logic
   let usersLeetcodeData = [];
   try {
-    const response = await fetch(
+    const response = await fetchWithExtendedRetry(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/leetcodeData`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ leetcodeIdAndName: usersLeetcodeId }),
       },
     );
 
-    if (response.ok) {
-      usersLeetcodeData = await response.json();
+    if (response.status === 200) {
+      usersLeetcodeData = response.data;
     } else {
-      console.error("Error fetching LeetCode data:", response.statusText);
+      console.error(`Failed to fetch LeetCode data: ${response.error}`);
     }
   } catch (error) {
     console.error("Error fetching LeetCode data:", error);
@@ -86,16 +101,14 @@ export default async function GroupPage({
   return (
     <div className="pb-12">
       <div
-        className={`group relative min-h-[300px] w-full ${
-          groupDetails?.headerImageURL ? "group-header-image" : ""
-        } bg-zinc-300`}
+        className={`group relative min-h-[300px] w-full ${groupDetails?.headerImageURL ? "group-header-image" : ""} bg-zinc-300`}
         style={
           groupDetails?.headerImageURL
             ? { backgroundImage: `url('${groupDetails.headerImageURL}')` }
             : {}
         }
       >
-        <ChooseImageDialog groupId={id} userRole={userInMembership.role} />
+        <ChooseImageDialog groupId={groupId} userRole={userInMembership.role} />
       </div>
       <div className="page">
         <div className="flex items-center justify-between">
@@ -109,9 +122,9 @@ export default async function GroupPage({
           </div>
           <div className="flex items-center gap-2">
             <OptionsMenu
-              id={id}
-              groupDetails={groupDetails}
+              id={groupId}
               role={userInMembership.role}
+              groupDetails={groupDetails}
             />
           </div>
         </div>
@@ -134,7 +147,7 @@ function OptionsMenu({
 }: {
   id: string;
   role: MemberRole;
-  groupDetails: GroupWithMembershipsAndUsers;
+  groupDetails: any;
 }) {
   return (
     <DropdownMenu modal={false}>
@@ -149,8 +162,8 @@ function OptionsMenu({
             View Members
           </Link>
         </DropdownMenuItem>
-        {role === MemberRole.ADMIN && (
-          <div>
+        {role === "ADMIN" && (
+          <>
             <DropdownMenuItem asChild>
               <AddFriendModal groupId={id} />
             </DropdownMenuItem>
@@ -160,7 +173,7 @@ function OptionsMenu({
             <DropdownMenuItem asChild>
               <DeleteGroupButton groupId={id} />
             </DropdownMenuItem>
-          </div>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
