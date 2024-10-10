@@ -32,7 +32,7 @@ function GroupCard({ group }: { group: Group }) {
   return (
     <Link
       href={`/group/${group.id}`}
-      className="flex flex-col overflow-hidden rounded-xl border"
+      className="flex min-h-[200px] flex-col overflow-hidden rounded-xl border"
     >
       <div
         className="h-[140px] bg-zinc-200"
