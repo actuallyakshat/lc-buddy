@@ -42,25 +42,24 @@ export default async function GroupPage({
     (membership) => membership.user.id === user?.id,
   );
 
-  console.log(userInMembership);
-
   if (!userInMembership) return <div>You are not a member of this group</div>;
-
   if (!groupDetails) return <div>Group not found</div>;
 
-  const usersLeetcodeId = groupDetails.memberships.map((membership) => {
-    return {
-      id: membership.user.leetcodeId,
-      name: membership.user.name,
-    };
-  });
+  const usersLeetcodeId = groupDetails.memberships.map((membership) => ({
+    id: membership.user.leetcodeId,
+    name: membership.user.name,
+  }));
 
-  //TODO: Uncomment in production
-  const usersLeetcodeData = await getLeetcodeUserData(usersLeetcodeId);
-  if (usersLeetcodeData.length === 0) return <div>No data found</div>;
+  // Fetch LeetCode user data with a fallback to avoid breaking the page
+  let usersLeetcodeData = [];
+  try {
+    usersLeetcodeData = await getLeetcodeUserData(usersLeetcodeId);
+  } catch (error) {
+    console.error("Error fetching LeetCode data:", error);
+  }
 
   const solvedThisWeek = usersLeetcodeData.map((data) =>
-    getSolvedQuestionsThisWeek(data.submissionCalendar, data.name),
+    getSolvedQuestionsThisWeek(data?.submissionCalendar ?? {}, data.name),
   );
 
   return (
@@ -95,7 +94,9 @@ export default async function GroupPage({
             />
           </div>
         </div>
-        <WeeklySubmissionsChart data={solvedThisWeek} />
+        {solvedThisWeek.length > 0 && (
+          <WeeklySubmissionsChart data={solvedThisWeek} />
+        )}
         <div className="grid w-full grid-cols-1 gap-4 xl:grid-cols-2">
           <DifficultyBifurcationBarChart data={usersLeetcodeData} />
           <SubmissionsConrtibutionPieChart data={solvedThisWeek} />
