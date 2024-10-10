@@ -24,26 +24,27 @@ async function fetchWithExtendedRetry(
     try {
       console.log(`Attempt ${attempt + 1} for URL: ${url}`);
       const response = await fetch(url, options);
-      
+
       if (response.ok) {
         const data = await response.json();
         return { status: response.status, data };
       }
-      
+
+      // Log the error and continue retrying for 404 or other statuses
       console.error(`HTTP error! status: ${response.status}, URL: ${url}, Attempt: ${attempt + 1}`);
       
       if (attempt < maxRetries - 1) {
         const backoff = Math.min(initialBackoff * Math.pow(2, attempt), maxBackoff);
         console.log(`Waiting for ${backoff}ms before next attempt...`);
-        await new Promise(resolve => setTimeout(resolve, backoff));
+        await new Promise((resolve) => setTimeout(resolve, backoff));
       }
     } catch (error: any) {
       console.error(`Fetch error: ${error.message}, URL: ${url}, Attempt: ${attempt + 1}`);
-      
+
       if (attempt < maxRetries - 1) {
         const backoff = Math.min(initialBackoff * Math.pow(2, attempt), maxBackoff);
         console.log(`Waiting for ${backoff}ms before next attempt...`);
-        await new Promise(resolve => setTimeout(resolve, backoff));
+        await new Promise((resolve) => setTimeout(resolve, backoff));
       }
     }
   }
