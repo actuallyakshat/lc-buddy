@@ -148,7 +148,6 @@ export async function updateUserDetails({
       throw new Error("Invalid user details");
 
     const isValidId = await checkIfValidLeetcodeId(leetcodeId);
-    console.log("IS VALID --> ", isValidId);
     if (!isValidId) throw new Error("Invalid Leetcode ID");
 
     const user = await prisma.user.findUnique({

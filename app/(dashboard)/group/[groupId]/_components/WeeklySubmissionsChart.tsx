@@ -53,7 +53,6 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
 
 export function WeeklySubmissionsChart(data: any) {
   const chartData = transformSubmissionsToChartData(data.data);
-  console.log(chartData);
 
   // Get the list of users with their submission counts
   const users = Object.keys(chartData[0]).filter((key) => key !== "day");

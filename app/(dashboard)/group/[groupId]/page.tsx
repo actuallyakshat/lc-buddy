@@ -51,14 +51,35 @@ export default async function GroupPage({
   }));
 
   // Fetch LeetCode user data with a fallback to avoid breaking the page
+  // let usersLeetcodeData = [];
+  // try {
+  //   usersLeetcodeData = await getLeetcodeUserData(usersLeetcodeId);
+  // } catch (error) {
+  //   console.error("Error fetching LeetCode data:", error);
+  // }
   let usersLeetcodeData = [];
   try {
-    usersLeetcodeData = await getLeetcodeUserData(usersLeetcodeId);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/leetcodeData`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ leetcodeIdAndName: usersLeetcodeId }),
+      },
+    );
+
+    if (response.ok) {
+      usersLeetcodeData = await response.json();
+    } else {
+      console.error("Error fetching LeetCode data:", response.statusText);
+    }
   } catch (error) {
     console.error("Error fetching LeetCode data:", error);
   }
 
-  const solvedThisWeek = usersLeetcodeData.map((data) =>
+  const solvedThisWeek = usersLeetcodeData.map((data: any) =>
     getSolvedQuestionsThisWeek(data?.submissionCalendar ?? {}, data.name),
   );
 
