@@ -21,34 +21,6 @@ import { SubmissionsConrtibutionPieChart } from "./_components/SubmissionsConrti
 import { WeeklySubmissionsChart } from "./_components/WeeklySubmissionsChart";
 import { getLeetcodeUserData } from "./_actions/leetcode-actions";
 
-// Retry logic for server-side fetching
-async function fetchWithExtendedRetry(
-  url: string,
-  options: RequestInit,
-  maxRetries = 3,
-  backoffTime = 1000,
-) {
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    try {
-      const response = await fetch(url, options);
-      if (response.ok) {
-        const data = await response.json();
-        return { status: response.status, data };
-      } else {
-        console.error(`Attempt ${attempt + 1} failed: ${response.statusText}`);
-      }
-    } catch (error: any) {
-      console.error(
-        `Attempt ${attempt + 1} encountered an error: ${error.message}`,
-      );
-    }
-    await new Promise((resolve) =>
-      setTimeout(resolve, backoffTime * (attempt + 1)),
-    );
-  }
-  return { status: 0, error: `Failed after ${maxRetries} attempts` };
-}
-
 export default async function GroupPage({
   params,
 }: {
