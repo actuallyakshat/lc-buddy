@@ -19,6 +19,7 @@ import { DifficultyBifurcationBarChart } from "./_components/DifficultyBifurcati
 import EditGroupButton from "./_components/EditGroupButton";
 import { SubmissionsConrtibutionPieChart } from "./_components/SubmissionsConrtibutionPieChart";
 import { WeeklySubmissionsChart } from "./_components/WeeklySubmissionsChart";
+import { getLeetcodeUserData } from "./_actions/leetcode-actions";
 
 // Retry logic for server-side fetching
 async function fetchWithExtendedRetry(
@@ -76,20 +77,9 @@ export default async function GroupPage({
   // Fetch LeetCode user data with retry logic
   let usersLeetcodeData = [];
   try {
-    const response = await fetchWithExtendedRetry(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/leetcodeData`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ leetcodeIdAndName: usersLeetcodeId }),
-      },
-    );
-
-    if (response.status === 200) {
-      usersLeetcodeData = response.data;
-    } else {
-      console.error(`Failed to fetch LeetCode data: ${response.error}`);
-    }
+    const response = await getLeetcodeUserData(usersLeetcodeId);
+    if (response) usersLeetcodeData = response;
+    else throw new Error("Failed to fetch LeetCode data");
   } catch (error) {
     console.error("Error fetching LeetCode data:", error);
   }
