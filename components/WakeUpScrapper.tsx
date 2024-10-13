@@ -13,14 +13,9 @@ export default function WakeUpScrapper() {
 
   React.useEffect(() => {
     if (!didFetch) {
-      console.log(
-        "Fetching from LeetCode API",
-        process.env.NEXT_PUBLIC_LEETCODE_API,
-      );
       fetch(`${process.env.NEXT_PUBLIC_LEETCODE_API}`)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           setDidFetch(true);
           // Save to sessionStorage
           sessionStorage.setItem("didFetchLeetCode", JSON.stringify(true));
