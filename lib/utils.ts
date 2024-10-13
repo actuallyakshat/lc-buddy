@@ -13,13 +13,13 @@ export function getSolvedQuestionsThisWeek(
   username: string,
 ) {
   const daysOfWeek = [
-    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
+    "Sunday",
   ];
 
   // Create an object to store the solved questions count for each day
@@ -36,7 +36,7 @@ export function getSolvedQuestionsThisWeek(
   const now = new Date();
   const currentDayOfWeek = now.getDay(); // Sunday = 0, Monday = 1, etc.
   const startOfWeek = new Date(now);
-  startOfWeek.setDate(now.getDate() - currentDayOfWeek + 1); // Start from Monday
+  startOfWeek.setDate(now.getDate() - ((currentDayOfWeek + 6) % 7)); // Start from Monday
   startOfWeek.setHours(0, 0, 0, 0); // Set time to midnight of Monday
 
   const endOfWeek = new Date(startOfWeek);
@@ -51,7 +51,8 @@ export function getSolvedQuestionsThisWeek(
         const date = new Date(parseInt(timestamp) * 1000); // Convert Unix timestamp to JS date
 
         if (date >= startOfWeek && date <= endOfWeek) {
-          const dayName = daysOfWeek[date.getDay()]; // Get the day name
+          const dayIndex = (date.getDay() + 6) % 7; // Adjust index so Monday is 0
+          const dayName = daysOfWeek[dayIndex]; // Get the day name
           solvedThisWeek[dayName] += count; // Add the count to the corresponding day
         }
       }

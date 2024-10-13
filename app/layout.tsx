@@ -5,6 +5,7 @@ import { GlobalProvider } from "@/context/GlobalContext";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import Navbar from "./(dashboard)/_components/Navbar";
+import WakeUpScrapper from "@/components/WakeUpScrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
         <body className={`${inter.className}`}>
           <GlobalProvider>
             <Navbar />
+            <WakeUpScrapper />
             {children}
             <Toaster />
           </GlobalProvider>
