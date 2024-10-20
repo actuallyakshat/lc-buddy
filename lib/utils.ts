@@ -102,8 +102,8 @@ export const COLORS = [
   "#4BC0C0",
   "#9966FF",
   "#FF9F40",
-  "#E7FF9F",
-  "#40C0FF",
+  "#a1b26f",
+  "#0c0c0b",
   "#FFB740",
-  "#B0E0E6",
+  "#3a4a4c",
 ];
