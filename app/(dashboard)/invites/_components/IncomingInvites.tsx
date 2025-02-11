@@ -12,7 +12,7 @@ export default function IncomingInvites({
   userId: string;
 }) {
   return (
-    <div className="mt-5 min-h-[30vh]">
+    <div className="mt-5 min-h-[30vh] space-y-2">
       {invites!
         .filter((invite) => invite.receiverId == userId)
         .map((invite) => (

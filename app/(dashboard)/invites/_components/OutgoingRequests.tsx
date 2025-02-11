@@ -14,7 +14,7 @@ export default function OutgoingRequests({
       <p className="text-sm font-medium text-muted-foreground">
         Requests you have sent to other users
       </p>
-      <div className="mt-4">
+      <div className="mt-4 space-y-2">
         {invites
           .filter((invite) => invite.senderId == userId)
           .map((invite) => (
